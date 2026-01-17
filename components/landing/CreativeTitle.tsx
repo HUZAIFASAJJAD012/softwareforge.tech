@@ -17,7 +17,7 @@ export default function CreativeTitle() {
       gsap.set(titleRef.current, {
         x: "-30vw",
         y: "-30vh",
-        opacity: 0.3,
+        opacity: 0.0,
         scale: 1.05,
         filter: "brightness(0.8)",
       });
@@ -30,6 +30,9 @@ export default function CreativeTitle() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
+
+
+
           end: "+=250%",
           scrub: 1, // 👈 smooth catch-up
           pin: true,

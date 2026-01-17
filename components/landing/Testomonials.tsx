@@ -31,7 +31,7 @@ export default function Testimonials() {
   };
 
   return (
-    <section className="h-full bg-black overflow-hidden flex items-center relative">
+    <section className="h-full bg-black overflow-hidden flex items-center relative ">
       {/* Rainbow line at the very top of THIS section */}
       <div
         className="absolute top-0 left-0 right-0 h-[2px] z-10"
@@ -39,10 +39,10 @@ export default function Testimonials() {
           background: "linear-gradient(90deg,#ff00cc,#3333ff,#00ffcc)",
         }}
       />
-      
+
       <div
         ref={trackRef}
-        className="flex transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)]"
+        className="flex transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] mt-30"
         style={{
           transform: `translateX(calc(50vw - ${(index + 0.5) * 33.333}vw))`,
         }}
@@ -56,9 +56,8 @@ export default function Testimonials() {
           return (
             <div
               key={i}
-              className={`w-[33.333vw] max-w-[720px] px-10 shrink-0 text-center transition-all duration-500 ${
-                isActive ? "opacity-100 scale-100" : "opacity-30 scale-95"
-              }`}
+              className={`w-[33.333vw] max-w-[720px] px-10 shrink-0 text-center transition-all duration-500 ${isActive ? "opacity-100 scale-100" : "opacity-30 scale-95"
+                }`}
             >
               {/* Rainbow line above testimonial */}
               <div
@@ -71,6 +70,7 @@ export default function Testimonials() {
               />
               <p className="text-white text-3xl mb-4">{item.quote}</p>
               <span className="text-white/60 text-xl">— {item.author}</span>
+              <p className="text-white/60 text-xl">◆</p>
             </div>
           );
         })}
