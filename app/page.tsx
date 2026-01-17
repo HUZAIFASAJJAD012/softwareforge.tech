@@ -1,52 +1,20 @@
-import Header from '@/components/Header';
-import Hero from '@/components/Hero';
+import ClientLogos from '@/components/landing/ClientLogos';
 
 import CreativeTitle from '@/components/landing/CreativeTitle';
 
 import ContactSection from '@/components/landing/ContactSection';
 import Testimonials from '@/components/landing/Testomonials';
 
-import WorkShowcase from '@/components/WorkShowcase';
+import WorkShowcase from '@/components/landing/WorkShowcase';
 
 import Link from 'next/link';
+import Hero from '@/components/landing/Hero';
 
 
 export default function Home() {
   return (
     <main className="w-full bg-[var(--bg-color)] min-h-[200vh]">
-      <Header />
       <Hero />
-
-
-      {/* Spacer content to demonstrate smooth scrolling */}
-      <section className="container py-24 border-t border-white/10">
-        <div className="flex flex-col gap-12">
-          <div className="flex justify-between items-baseline">
-            <h2 className="text-4xl text-[var(--text-primary)]">Selected Works</h2>
-            <span className="text-[var(--text-secondary)]">2023 — 2024</span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[1, 2, 3, 4].map((item) => (
-              <div key={item} className="aspect-[4/5] bg-[#1a1a1a] rounded-lg relative overflow-hidden group">
-                <div className="absolute inset-0 flex items-center justify-center text-[var(--text-secondary)] group-hover:text-[var(--accent-green)] transition-colors duration-500">
-                  Project {item}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="container py-24 border-t border-white/10">
-        <div className="flex flex-col gap-12">
-          <h2 className="text-4xl text-[var(--text-primary)]">Agency</h2>
-          <p className="text-xl max-w-2xl text-[var(--text-secondary)]">
-            We are a team of designers, developers, and strategists building the future of the web.
-          </p>
-        </div>
-
-      
       <section className="bg-black relative z-10">
         <WorkShowcase 
           videoSrc="/videos/v1.mp4"
@@ -54,6 +22,12 @@ export default function Home() {
           description="Need is your cancer protection system"
           category="Healthcare"
           color="#142d24" 
+          mediaItems={[
+            "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2670&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2670&auto=format&fit=crop",
+            "/videos/v1.mp4", // Adding a video to test the video rendering feature
+            "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2664&auto=format&fit=crop"
+          ]}
         />
         
         <WorkShowcase 
@@ -62,6 +36,11 @@ export default function Home() {
           description="The world's most needed reusable bottle"
           category="E-commerce"
           color="#1a1a1a"
+          mediaItems={[
+             "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2574&auto=format&fit=crop",
+             "/videos/v2.mp4",
+             "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2600&auto=format&fit=crop"
+          ]}
         />
 
         <WorkShowcase 
@@ -70,6 +49,11 @@ export default function Home() {
           description="Need is your cancer protection system"
           category="Healthcare"
           color="#142d24" 
+          mediaItems={[
+            "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2670&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2670&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2664&auto=format&fit=crop"
+          ]}
         />
 
          <WorkShowcase 
@@ -78,10 +62,11 @@ export default function Home() {
           description="The world's most needed reusable bottle"
           category="E-commerce"
           color="#1a1a1a"
+          mediaItems={[
+             "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2574&auto=format&fit=crop",
+             "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2600&auto=format&fit=crop"
+          ]}
         />
-
-
-
       </section>
       <CreativeTitle />
       <Testimonials />

@@ -4,24 +4,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
 const logos = [
-  ['/logos/1.png', '/logos/2.png'],
-  ['/logos/3.png', '/logos/4.png'],
-  ['/logos/5.png', '/logos/6.png'],
-  ['/logos/7.png', '/logos/8.png'],
-  ['/logos/9.png', '/logos/10.png'],
+  ['/logos/1.svg', '/logos/2.svg'],
+  ['/logos/3.svg', '/logos/4.svg'],
+  ['/logos/5.svg', '/logos/6.svg'],
+  ['/logos/7.svg', '/logos/8.svg'],
+  ['/logos/9.svg', '/logos/10.svg'],
+  ['/logos/7.svg', '/logos/8.svg'],
 ];
 
 export default function ClientLogos() {
   return (
-    <section className="w-full  py-20 border-t border-white/5">
-      <div className="w-full max-w-[1400px] mx-auto px-4 md:px-12">
-        <div className="flex flex-wrap justify-between items-center gap-12 md:gap-20 opacity-80">
+    <div className="w-full pt-16 pb-10">
+      <div className="w-full max-w-[1600px] mx-auto px-4 md:px-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 md:gap-12 items-center opacity-80 justify-items-center">
           {logos.map((pair, index) => (
             <LogoPair key={index} images={pair} index={index} />
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -29,17 +30,15 @@ function LogoPair({ images, index }: { images: string[]; index: number }) {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    // Stagger the interval slightly based on index to create a wave effect
-    // or just random start.
     const interval = setInterval(() => {
       setCurrent((prev) => (prev === 0 ? 1 : 0));
-    }, 3000 + index * 500); // Base 3s + offset
+    }, 3000 + index * 500); 
 
     return () => clearInterval(interval);
   }, [index]);
 
   return (
-    <div className="relative h-12 w-32 md:h-16 md:w-40">
+    <div className="relative h-20 w-44 md:h-24 md:w-56">
       <AnimatePresence mode="wait">
         <motion.div
           key={current}
@@ -49,16 +48,12 @@ function LogoPair({ images, index }: { images: string[]; index: number }) {
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="absolute inset-0 flex items-center justify-center"
         >
-          {/* Using fill to handle varied logo aspect ratios gracefully */}
           <div className="relative w-full h-full">
             <Image
               src={images[current]}
               alt={`Client logo ${current + 1}`}
               fill
-              className="object-contain invert brightness-0 filter" // Ensuring white logo if they are black, or keeping as is if white. 
-              // The reference image shows white logos on black. Assuming source images might need inversion or are already correct.
-              // I'll assume they might be colored or black and force them to white/gray scale if needed. 
-              // For now, object-contain is key.
+              className="object-contain invert brightness-0 filter" 
             />
           </div>
         </motion.div>
