@@ -1,15 +1,22 @@
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
+
 import CreativeTitle from '@/components/landing/CreativeTitle';
 
 import ContactSection from '@/components/landing/ContactSection';
 import Testimonials from '@/components/landing/Testomonials';
+
+import WorkShowcase from '@/components/WorkShowcase';
+
+import Link from 'next/link';
+
 
 export default function Home() {
   return (
     <main className="w-full bg-[var(--bg-color)] min-h-[200vh]">
       <Header />
       <Hero />
+
 
       {/* Spacer content to demonstrate smooth scrolling */}
       <section className="container py-24 border-t border-white/10">
@@ -38,6 +45,43 @@ export default function Home() {
             We are a team of designers, developers, and strategists building the future of the web.
           </p>
         </div>
+
+      
+      <section className="bg-black relative z-10">
+        <WorkShowcase 
+          videoSrc="/videos/v1.mp4"
+          title="Need"
+          description="Need is your cancer protection system"
+          category="Healthcare"
+          color="#142d24" 
+        />
+        
+        <WorkShowcase 
+          videoSrc="/videos/v2.mp4"
+          title="Ocean Bottle"
+          description="The world's most needed reusable bottle"
+          category="E-commerce"
+          color="#1a1a1a"
+        />
+
+        <WorkShowcase 
+          videoSrc="/videos/v1.mp4"
+          title="Need"
+          description="Need is your cancer protection system"
+          category="Healthcare"
+          color="#142d24" 
+        />
+
+         <WorkShowcase 
+          videoSrc="/videos/v2.mp4"
+          title="Ocean Bottle"
+          description="The world's most needed reusable bottle"
+          category="E-commerce"
+          color="#1a1a1a"
+        />
+
+
+
       </section>
       <CreativeTitle />
       <Testimonials />

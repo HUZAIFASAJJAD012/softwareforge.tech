@@ -2,32 +2,72 @@
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MoveUpRight } from 'lucide-react';
+import ClientLogos from './ClientLogos';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
   const container = useRef(null);
   const titleRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const introLineRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+  const starRef = useRef(null);
+  const logoRef = useRef(null);
+  
+  // Parallax Refs
+  const line1Ref = useRef(null);
+  const line2Ref = useRef(null);
+  const line3Ref = useRef(null);
 
   useGSAP(() => {
     const tl = gsap.timeline();
     
     tl.from(titleRefs.current, {
       yPercent: 100,
-      opacity: 0,
-      duration: 1.2,
-      stagger: 0.15,
-      ease: "power3.out",
+      duration: 1.5,
+      stagger: 0.2,
+      ease: "power4.out",
       delay: 0.5
     });
+
+    gsap.to(starRef.current, {
+      rotation: 360,
+      repeat: -1,
+      duration: 10,
+      ease: "linear"
+    });
     
-    // Fade in intro text
-    gsap.from(".hero-intro", {
+    tl.from(introLineRefs.current, {
+      yPercent: 100,
+      duration: 1,
+      stagger: 0.1,
+      ease: "power3.out"
+    }, "-=1"); 
+
+    tl.from(logoRef.current, {
       opacity: 0,
       y: 20,
       duration: 1,
-      delay: 1.5,
       ease: "power2.out"
+    }, "-=0.5");
+
+    // Scroll Parallax & Pin Animation
+    const scrollTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: container.current,
+        start: "top top",
+        end: "+=150%", // Pin for 1.5 screen heights
+        pin: true,
+        scrub: 1,
+      }
     });
+
+    scrollTl.to(line1Ref.current, { x: "150vw", ease: "power1.in" }, 0)
+            .to(line2Ref.current, { x: "-150vw", ease: "power1.in" }, 0)
+            .to(line3Ref.current, { x: "150vw", ease: "power1.in" }, 0)
+            .to(".hero-intro", { opacity: 0, duration: 0.5 }, 0);
+
   }, { scope: container });
 
   const addToRefs = (el: HTMLSpanElement | null) => {
@@ -36,10 +76,16 @@ export default function Hero() {
     }
   };
 
+  const addToIntroRefs = (el: HTMLParagraphElement | null) => {
+    if (el && !introLineRefs.current.includes(el)) {
+      introLineRefs.current.push(el);
+    }
+  };
+
   return (
     <section 
       ref={container} 
-      className="h-screen relative flex flex-col items-center justify-center bg-[#0D0D0D] overflow-hidden"
+      className="h-screen relative flex flex-col items-center justify-center bg-[#0D0D0D] overflow-hidden mt-9"
       style={{
         paddingLeft: 'var(--padding-x)',
         paddingRight: 'var(--padding-x)'
@@ -47,27 +93,23 @@ export default function Hero() {
     >
       
       {/* Main Typography */}
-      <div className="flex flex-col items-center leading-[0.85] text-[15vw] md:text-[14vw] tracking-tighter uppercase text-[#FAFAFA] w-full max-w-[1600px] mt-[-5vh]">
+      <div className="flex flex-col items-center leading-[0.85] text-[13vw] md:text-[12vw] tracking-tighter uppercase text-[#FAFAFA] w-full max-w-[1600px] mt-[-5vh]">
         
         {/* Line 1: Making */}
-        <div className="overflow-hidden w-full flex justify-center md:justify-start md:pl-[10%]">
-          <span ref={addToRefs} className="block font-medium">Making</span>
+        <div ref={line1Ref} className="overflow-hidden w-full flex justify-center md:justify-start md:pl-[10%]">
+          <span ref={addToRefs} className="block font-normal">Making</span>
         </div>
         
         {/* Line 2: The bold */}
-        <div className="overflow-hidden w-full flex justify-center items-center gap-[2vw]">
+        <div ref={line2Ref} className="overflow-hidden w-full flex justify-center items-center gap-[2vw]">
            <span ref={addToRefs} className="block font-serif italic lowercase font-light" style={{ fontFamily: 'var(--font-serif)' }}>the</span>
-           <span ref={addToRefs} className="block font-bold">bold</span>
+           <span ref={addToRefs} className="block font-semibold">bold</span>
         </div>
         
         {/* Line 3: beautiful */}
-        <div className="overflow-hidden w-full flex justify-center md:justify-end md:pr-[5%] relative">
+        <div ref={line3Ref} className="overflow-hidden w-full flex justify-center md:justify-end md:pr-[5%] relative">
           <span ref={addToRefs} className="block font-serif italic lowercase" style={{ fontFamily: 'var(--font-serif)' }}>
             beautiful
-            {/* Star Icon */}
-            <svg width="0.3em" height="0.3em" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute top-[10%] left-[26%] w-[12%] h-[12%] text-white animate-pulse">
-               <path d="M26 0L28.5 23.5L52 26L28.5 28.5L26 52L23.5 28.5L0 26L23.5 23.5L26 0Z" fill="currentColor"/>
-            </svg>
           </span>
         </div>
       </div>
@@ -76,22 +118,15 @@ export default function Hero() {
       <div className="absolute bottom-12 left-0 w-full px-8 md:px-12 flex flex-col md:flex-row justify-between items-end hero-intro">
         
         {/* Intro Text */}
-        <div className="max-w-xs text-sm md:text-base text-[#E5E5E5] font-sans leading-relaxed mb-12 md:mb-0">
-          <p>End-to-end creative</p>
-          <p>agency for the</p>
-          <p>ambitious.</p>
-        </div>
-
-        {/* Client Logos Row (Mockups) */}
-        <div className="flex flex-wrap gap-8 md:gap-16 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-          <span className="text-xl font-bold font-sans">ocean<br/>bottle</span>
-          <div className="bg-white text-black p-1 font-bold rounded-sm h-8 w-8 flex items-center justify-center text-xs">EPIC</div>
-          <span className="text-lg font-bold">PrimaryBid</span>
-          <span className="text-lg font-light tracking-widest">8VC</span>
-          <span className="border border-white/50 px-2 py-0.5 text-xs tracking-[0.2em] uppercase">Stanley's</span>
-          <div className="text-xs leading-tight">PROJECT<br/><span className="italic font-serif text-lg">Giving Back</span></div>
+        {/* Intro Text - with masks for reveal */}
+        <div className="max-w-xs text-sm md:text-base text-white font-sans leading-relaxed mb-12 md:mb-0 ml-18">
+          <div className="overflow-hidden"><p ref={addToIntroRefs}>End-to-end creative</p></div>
+          <div className="overflow-hidden"><p ref={addToIntroRefs}>agency for the</p></div>
+          <div className="overflow-hidden"><p ref={addToIntroRefs}>ambitious.</p></div>
         </div>
       </div>
+
+      {/* <ClientLogos /> */}
     </section>
   );
 }
