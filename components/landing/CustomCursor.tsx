@@ -9,6 +9,10 @@ export default function CustomCursor() {
   const [variant, setVariant] = useState('default'); // 'default' | 'open'
   const pathname = usePathname();
   const isDetail = pathname === '/detail';
+  const isPortfolio = pathname === '/portfolio';
+  const isOurTeam = pathname === '/our-team';
+  const isServices = pathname ==='/services';
+  const isContact = pathname === '/contact';
 
   // Mouse position
   const mouseX = useMotionValue(0);
@@ -61,7 +65,7 @@ export default function CustomCursor() {
         width: variant === 'open' ? 100 : 12,
         height: variant === 'open' ? 40 : 12,
         borderRadius: variant === 'open' ? 30 : 0,
-        backgroundColor: variant === 'open' ? '#ffffff' : (isDetail ? '#1a1a1a' : '#ffffff'),
+        backgroundColor: variant === 'open' ? '#ffffff' : (isDetail || isPortfolio || isOurTeam || isServices || isContact ? '#1a1a1a' : '#ffffff'),
         rotate: variant === 'open' ? 0 : 45,
       }}
       transition={{
