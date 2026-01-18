@@ -3,34 +3,29 @@ import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Suspense } from 'react';
-import DetailHeader from '@/components/DetailHeader';
+import DetailHeader from '@/components/landing/DetailHeader';
+import ScrollProgressFooter from '@/components/landing/ScrollProgressFooter';
 
 
-function DetailContent() {
-  const searchParams = useSearchParams();
-  const title = searchParams.get('title') || 'Project Title';
-  const video = searchParams.get('video');
-  const mediaParam = searchParams.get('media'); // Get the raw string
+export interface DetailContentProps {
+  title?: string;
+  video?: string | null;
+  mediaItems?: string[];
+}
 
-  // Parse media items safely
-  let mediaItems: string[] = [];
-  try {
-    if (mediaParam) {
-      mediaItems = JSON.parse(mediaParam);
-    }
-  } catch (e) {
-    console.error("Failed to parse media items", e);
-  }
+export function DetailContent({ 
+  title = 'Project Title', 
+  video = null, 
+  mediaItems = [] 
+}: DetailContentProps) {
 
   // Fallback if no media passed (using the old hardcoded list as fallback)
-  if (mediaItems.length === 0) {
-     mediaItems = [
+  const displayMediaItems = mediaItems.length > 0 ? mediaItems : [
       "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2670&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2670&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2664&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2574&auto=format&fit=crop"
-     ];
-  }
+      // "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2670&auto=format&fit=crop",
+      // "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2664&auto=format&fit=crop",
+      // "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2574&auto=format&fit=crop"
+  ];
 
   const isVideo = (url: string) => {
     return url.endsWith('.mp4') || url.endsWith('.webm');
@@ -38,7 +33,7 @@ function DetailContent() {
 
   return (
     <>
-    <DetailHeader />
+    <ScrollProgressFooter />
     <div className="w-full min-h-screen bg-[#fafafa] text-black pt-24 pb-12">
       
       {/* Title Section */}
@@ -103,7 +98,7 @@ function DetailContent() {
                  />
                ) : (
                  <Image
-                   src={mediaItems[0]} // Fallback to first image if no main video
+                   src={displayMediaItems[0]} // Fallback to first image if no main video
                    alt="Main project image"
                    fill
                    className="object-cover"
@@ -113,7 +108,7 @@ function DetailContent() {
 
             {/* Remaining Media Items (Right Stack) */}
             <div className="md:col-span-2 flex flex-col items-end gap-12 w-full">
-              {mediaItems.map((src, i) => (
+              {displayMediaItems.map((src, i) => (
                   <motion.div
                       key={i}
                       initial={{ opacity: 0, scale: 0.95 }}
@@ -149,10 +144,29 @@ function DetailContent() {
   );
 }
 
+function DetailPageContent() {
+  const searchParams = useSearchParams();
+  const title = searchParams.get('title') || 'Project Title';
+  const video = searchParams.get('video');
+  const mediaParam = searchParams.get('media'); // Get the raw string
+
+  // Parse media items safely
+  let mediaItems: string[] = [];
+  try {
+    if (mediaParam) {
+      mediaItems = JSON.parse(mediaParam);
+    }
+  } catch (e) {
+    console.error("Failed to parse media items", e);
+  }
+
+  return <DetailContent title={title} video={video} mediaItems={mediaItems} />;
+}
+
 export default function DetailPage() {
   return (
     <Suspense fallback={<div className="min-h-screen bg-[#fafafa]" />}>
-      <DetailContent />
+      <DetailPageContent />
     </Suspense>
   );
 }
