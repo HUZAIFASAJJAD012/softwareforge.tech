@@ -66,7 +66,6 @@ export default function ContactSection() {
             <p className="text-gray-500 text-lg">
               Let’s not waste any time.
             </p>
-
             {["Email", "Phone", "test", "test"].map((item) => (
               <div
                 key={item}

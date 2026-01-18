@@ -6,14 +6,16 @@ import { TbMenu3 } from "react-icons/tb";
 import { FaInstagram, FaLinkedin } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import { usePathname } from 'next/navigation';
+
 export default function DetailHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
-  // Styling Constants for the Light Theme Header (Project Detail Page)
-  const bgStyle = "#f0f0f0"; // Light gray background as requested
+  const bgStyle = "#f0f0f0"; 
   const textPrimary = "text-black";
   const textSecondary = "text-gray-500";
-  const borderStyle = "border-black/5"; // Subtle border for light mode
+  const borderStyle = "border-black/5"; 
   const backdropStyle = "backdrop-blur-md";
 
   return (
@@ -30,7 +32,7 @@ export default function DetailHeader() {
         {/* Logo Button - Inverted for light theme */}
         <Link 
           href="/" 
-          className={`bg-[${bgStyle}]/70 ${backdropStyle} border ${borderStyle} transition-colors h-14 rounded-xl flex flex-col items-center justify-center font-bold text-xs leading-none tracking-wide gap-0.5`}
+          className={`bg-[#f0f0f0]/70 ${backdropStyle} border ${borderStyle} transition-colors h-14 rounded-xl flex flex-col items-center justify-center font-bold text-xs leading-none tracking-wide gap-0.5`}
           style={{ paddingLeft: '15px', paddingRight: '15px' }}
         >
           <span>SOFTWARE</span>
@@ -60,8 +62,14 @@ export default function DetailHeader() {
               style={{ paddingLeft: '20px', paddingRight: '20px' }}
             >
               {/* Changed "Home" to "The Creator" as requested */}
+              {/* Dynamic Header Text */}
               <div className={`flex items-center gap-3 text-lg font-bold ${textPrimary}`}>
-                The Creator <span className={`text-[8px] ${textPrimary} font-bold`}>◆</span>
+                {(() => {
+                  if (pathname === '/services') return 'Our Services';
+                  if (pathname === '/our-team') return 'Our Team';
+                  if (pathname === '/contact') return 'Contact Us';
+                  return 'The Creator';
+                })()} <span className={`text-[8px] ${textPrimary} font-bold`}>◆</span>
               </div>
               <div className={`${textSecondary} group-hover:text-black transition-colors relative w-6 h-6`}>
                 <AnimatePresence mode="popLayout" initial={false}>
@@ -103,28 +111,32 @@ export default function DetailHeader() {
                   className="pb-8 flex flex-col gap-6"
                   style={{ paddingLeft: '35px', paddingRight: '24px',marginBottom: '10px' }}
                 >
-                   {/* Divider */}
 
-                  {/* Navigation Links - Styling updated for light theme */}
                   <nav className="flex flex-col gap-3">
-                    <Link href="/" className={`text-xl font-medium ${textPrimary} border-b border-black pb-1 w-fit`}>
-                      Home
-                    </Link>
-                    <Link href="/about" className="text-xl font-medium text-gray-500 hover:text-black transition-colors">
-                      About
-                    </Link>
-                    <Link href="/portfolio" className="text-xl font-medium text-gray-500 hover:text-black transition-colors">
-                      Portfolio
-                    </Link>
-                    <Link href="/team" className="text-xl font-medium text-gray-500 hover:text-black transition-colors">
-                      Our Team
-                    </Link>
-                    <Link href="/services" className="text-xl font-medium text-gray-500 hover:text-black transition-colors">
-                      Services
-                    </Link>
-                    <Link href="/contact" className="text-xl font-medium text-gray-500 hover:text-black transition-colors">
-                      Contact
-                    </Link>
+                    {[
+                      { name: 'Home', href: '/' },
+                      { name: 'About', href: '/about' },
+                      { name: 'Portfolio', href: '/portfolio' },
+                      { name: 'Our Team', href: '/our-team' },
+                      { name: 'Services', href: '/services' },
+                      { name: 'Contact', href: '/contact' },
+                    ].map((link) => {
+                      const isActive = pathname === link.href;
+                      return (
+                        <Link 
+                          key={link.href} 
+                          href={link.href} 
+                          className="group/nav relative w-fit"
+                        >
+                          <span className={`text-xl font-medium transition-colors ${isActive ? 'text-black' : 'text-gray-500 group-hover/nav:text-black'}`}>
+                            {link.name}
+                          </span>
+                          <span 
+                            className="absolute left-0 bottom-0 w-full h-[1px] bg-black transition-transform duration-300 origin-left scale-x-0 group-hover/nav:scale-x-100"
+                          />
+                        </Link>
+                      );
+                    })}
                   </nav>
 
                   {/* Bottom Cards Section */}
@@ -164,14 +176,14 @@ export default function DetailHeader() {
       style={{ paddingLeft: '15px', paddingRight: '15px' }}
       >
         {/* Chat Icon */}
-        <button className={`bg-[${bgStyle}]/70 ${backdropStyle} border ${borderStyle} h-14 w-14 rounded-xl flex items-center justify-center transition-colors group`}>
+        <button className={`bg-[#f0f0f0]/70 ${backdropStyle} border ${borderStyle} h-14 w-14 rounded-xl flex items-center justify-center transition-colors group`}>
           <MessageCircle className="w-5 h-5 -scale-x-100 text-gray-500 group-hover:text-black transition-colors" />
         </button>
 
         {/* Contact Button */}
         <Link 
           href="/contact" 
-          className={`bg-[${bgStyle}]/70 ${backdropStyle} border ${borderStyle} h-14 pl-6 pr-4 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${textPrimary} hover:text-black/70 group`}
+          className={`bg-[#f0f0f0]/70 ${backdropStyle} border ${borderStyle} h-14 pl-6 pr-4 rounded-xl flex items-center gap-3 text-sm font-medium transition-colors ${textPrimary} hover:text-black/70 group`}
           style={{ paddingLeft: '15px', paddingRight: '15px' }}
         >
           Contact us <ChevronRight className="w-4 h-4 text-gray-500 group-hover:text-black transition-colors" />
@@ -245,24 +257,30 @@ export default function DetailHeader() {
 
               {/* Navigation Links */}
               <nav className="flex flex-col gap-3 text-center">
-                <Link href="/" className="text-2xl font-medium text-black border-b border-black pb-1 w-fit mx-auto">
-                  Home
-                </Link>
-                <Link href="/about" className="text-2xl font-medium text-gray-500 hover:text-black transition-colors">
-                  About
-                </Link>
-                <Link href="/portfolio" className="text-2xl font-medium text-gray-500 hover:text-black transition-colors">
-                  Portfolio
-                </Link>
-                <Link href="/team" className="text-2xl font-medium text-gray-500 hover:text-black transition-colors">
-                  Our Team
-                </Link>
-                <Link href="/services" className="text-2xl font-medium text-gray-500 hover:text-black transition-colors">
-                  Services
-                </Link>
-                <Link href="/contact" className="text-2xl font-medium text-gray-500 hover:text-black transition-colors">
-                  Contact
-                </Link>
+                {[
+                  { name: 'Home', href: '/' },
+                  { name: 'About', href: '/about' },
+                  { name: 'Portfolio', href: '/portfolio' },
+                  { name: 'Our Team', href: '/team' },
+                  { name: 'Services', href: '/services' },
+                  { name: 'Contact', href: '/contact' },
+                ].map((link) => {
+                  const isActive = pathname === link.href;
+                  return (
+                    <Link 
+                      key={link.href} 
+                      href={link.href} 
+                      className="group/nav relative w-fit mx-auto"
+                    >
+                      <span className={`text-2xl font-medium transition-colors ${isActive ? 'text-black' : 'text-gray-500 group-hover/nav:text-black'}`}>
+                        {link.name}
+                      </span>
+                      <span 
+                        className="absolute left-0 bottom-0 w-full h-[1px] bg-black transition-transform duration-300 origin-left scale-x-0 group-hover/nav:scale-x-100"
+                      />
+                    </Link>
+                  );
+                })}
               </nav>
 
               {/* Bottom Cards Section */}
