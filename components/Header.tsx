@@ -13,7 +13,7 @@ export default function Header() {
   const pathname = usePathname();
 
   // Hide this global header on the detail page (it has its own custom header)
-  if (pathname === '/detail') return null;
+  if (pathname === '/detail' || pathname === '/portfolio' || pathname === '/our-team' || pathname === '/services' || pathname === '/contact') return null;
 
   return (
     <header 
@@ -105,24 +105,30 @@ export default function Header() {
 
                   {/* Navigation Links */}
                   <nav className="flex flex-col gap-3">
-                    <Link href="/" className="text-xl font-medium text-white border-b border-white pb-1 w-fit">
-                      Home
-                    </Link>
-                    <Link href="/about" className="text-xl font-medium text-white/70 hover:text-white transition-colors">
-                      About
-                    </Link>
-                    <Link href="/portfolio" className="text-xl font-medium text-white/70 hover:text-white transition-colors">
-                      Portfolio
-                    </Link>
-                    <Link href="/team" className="text-xl font-medium text-white/70 hover:text-white transition-colors">
-                      Our Team
-                    </Link>
-                    <Link href="/services" className="text-xl font-medium text-white/70 hover:text-white transition-colors">
-                      Services
-                    </Link>
-                    <Link href="/contact" className="text-xl font-medium text-white/70 hover:text-white transition-colors">
-                      Contact
-                    </Link>
+                    {[
+                      { name: 'Home', href: '/' },
+                      { name: 'About', href: '/about' },
+                      { name: 'Portfolio', href: '/portfolio' },
+                      { name: 'Our Team', href: '/our-team' },
+                      { name: 'Services', href: '/services' },
+                      { name: 'Contact', href: '/contact' },
+                    ].map((link) => {
+                      const isActive = pathname === link.href;
+                      return (
+                        <Link 
+                          key={link.href} 
+                          href={link.href} 
+                          className="group/nav relative w-fit"
+                        >
+                          <span className={`text-xl font-medium transition-colors ${isActive ? 'text-white' : 'text-white/70 group-hover/nav:text-white'}`}>
+                            {link.name}
+                          </span>
+                          <span 
+                            className="absolute left-0 bottom-0 w-full h-[1px] bg-white transition-transform duration-300 origin-left scale-x-0 group-hover/nav:scale-x-100"
+                          />
+                        </Link>
+                      );
+                    })}
                   </nav>
 
                   {/* Bottom Cards Section */}
@@ -243,24 +249,30 @@ export default function Header() {
 
               {/* Navigation Links */}
               <nav className="flex flex-col gap-3 text-center">
-                <Link href="/" className="text-2xl font-medium text-white border-b border-white pb-1 w-fit mx-auto">
-                  Home
-                </Link>
-                <Link href="/about" className="text-2xl font-medium text-white/70 hover:text-white transition-colors">
-                  About
-                </Link>
-                <Link href="/portfolio" className="text-2xl font-medium text-white/70 hover:text-white transition-colors">
-                  Portfolio
-                </Link>
-                <Link href="/team" className="text-2xl font-medium text-white/70 hover:text-white transition-colors">
-                  Our Team
-                </Link>
-                <Link href="/services" className="text-2xl font-medium text-white/70 hover:text-white transition-colors">
-                  Services
-                </Link>
-                <Link href="/contact" className="text-2xl font-medium text-white/70 hover:text-white transition-colors">
-                  Contact
-                </Link>
+                {[
+                  { name: 'Home', href: '/' },
+                  { name: 'About', href: '/about' },
+                  { name: 'Portfolio', href: '/portfolio' },
+                  { name: 'Our Team', href: '/team' },
+                  { name: 'Services', href: '/services' },
+                  { name: 'Contact', href: '/contact' },
+                ].map((link) => {
+                  const isActive = pathname === link.href;
+                  return (
+                    <Link 
+                      key={link.href} 
+                      href={link.href} 
+                      className="group/nav relative w-fit mx-auto"
+                    >
+                      <span className={`text-2xl font-medium transition-colors ${isActive ? 'text-white' : 'text-white/70 group-hover/nav:text-white'}`}>
+                        {link.name}
+                      </span>
+                      <span 
+                        className="absolute left-0 bottom-0 w-full h-[1px] bg-white transition-transform duration-300 origin-left scale-x-0 group-hover/nav:scale-x-100"
+                      />
+                    </Link>
+                  );
+                })}
               </nav>
 
               {/* Bottom Cards Section */}
