@@ -9,7 +9,7 @@ import WorkShowcase from '@/components/landing/WorkShowcase';
 
 import Link from 'next/link';
 import Hero from '@/components/landing/Hero';
-import Footer from '@/components/Footer';
+import FooterWrapper from '@/components/FooterWrapper';
 import AboutFluidPage from '@/components/about/AboutSection';
 import Companies from '@/components/about/Companies';
 
@@ -75,7 +75,7 @@ export default function Home() {
 
       <ContactSection />
       <Companies />
-      <Footer />
+      <FooterWrapper />
     </main>
   );
 }
